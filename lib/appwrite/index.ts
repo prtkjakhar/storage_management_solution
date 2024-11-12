@@ -2,9 +2,11 @@
 import { Account, Avatars, Client, Databases, Storage } from 'node-appwrite';
 import { appwriteConfig } from './config';
 import { cookies } from 'next/headers';
+import { redirect } from 'next/navigation';
 
 export const createSessionClient = async () => {
-  const client = new Client()
+  try {
+    const client = new Client()
     .setEndpoint(appwriteConfig.endpointUrl)
     .setProject(appwriteConfig.projectId);
 
@@ -22,6 +24,9 @@ export const createSessionClient = async () => {
         return new Databases(client);
       }
     }
+  }catch(error){
+    redirect('/sign-in');
+  }
 };
 
 export const createAdminClient = async () => {
